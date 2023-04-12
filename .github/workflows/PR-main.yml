@@ -1,4 +1,4 @@
-name: Test Fork PR build
+name: Build and Test
 
 on:
   push:
@@ -14,8 +14,8 @@ env:
   TARGET_BRANCH_NAME: ${{ github.base_ref }}
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  Ubuntu-20-04-x86_64:
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: PR info
@@ -41,7 +41,7 @@ jobs:
     - name : Configure
       run: cmake -DBUILD_TESTING=ON -S . -B build
     - name : Build
-      run: cmake --build build -j$(nproc -all)
+      run: cmake --build build -j$(nproc --all)
     - name : Run Tests
       run: |
           cd build
