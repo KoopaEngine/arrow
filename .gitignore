@@ -1,0 +1,49 @@
+# Prerequisites
+!.gitignore
+*~
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Cmake
+.cache/
+build/
+Testing/
+CMakeSettings.json
+compile_commands.json
+
+#CLion
+cmake-build/
+cmake-build-debug/
+.idea/
+
+#VSCode
+.vscode/
