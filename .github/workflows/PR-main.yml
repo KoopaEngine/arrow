@@ -47,11 +47,11 @@ jobs:
     - name: Check clang-format
       run: | 
           find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -not -path '*/extern/*' -exec clang-format -style=file -i {} \;
-          git diff --quiet || echo -e "\e[31mPlease format code with\e[0m \e[32mclang-format.\e[0m"
+          git diff --quiet || echo -e "\e[31mPlease format code with\e[0m \e[32mclang-format.\e[0m" && exit 1
     - name: Check cmake-format
       run: |
           find . \( -name '*.cmake' -o -name 'CMakeLists.txt' \) -not -path  '*/extern/*/*' -exec cmake-format -i {} \;
-          git diff --quiet || echo -e "\e[31mPlease format code with\e[0m \e[32mcmake-format.\e[0m"
+          git diff --quiet || echo -e "\e[31mPlease format code with\e[0m \e[32mcmake-format.\e[0m" && exit 1
     - name : Configure
       run: cmake -DBUILD_TESTING=ON -S . -B build
     - name : Build
