@@ -44,27 +44,14 @@ jobs:
           # git clone --branch ${{ env.TARGET_BRANCH_NAME }} https://github.com/KoopaEngine/arrow.git
           git pull -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "${{ env.SOURCE_BRANCH_NAME }}"
           git status
-    - name: Format code
+    - name: Check clang-format
       run: | 
           find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -not -path '*/extern/*' -exec clang-format -style=file -i {} \;
-          git diff
-    - name: Commit formated code
+          git diff --exit-code
+    - name: Check cmake-format
       run: |
-          git config user.name "Github Action Bot" 
-          git config user.email "actions@users.noreply.github.com"
-          git add .
-          git status
-          git remote -v
-          # git fetch upstream pull/{{env.PR_NUM}}/head:pr{{env.PR_NUM}}
-          # git checkout pr{{env.PR_NUM}}
-          git commit -m "Format code"
-    - name: Push formatted code
-      run: |
-          git push  "https://github.com/KoopaEngine/arrow.git" "$(git rev-parse --short HEAD):${{ env.SOURCE_BRANCH_NAME }}"
-          # git push origin pull/${{env.PR_NUM}}/merge
-          # git push upstream pull/{{env.PR_NUM}}/head:pr{{env.PR_NUM}}
-#     - name : Format
-#       run: find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
+          find . \( -name '*.cmake' -o -name 'CMakeLists.txt' \) -not -path  '*/extern/*/*' -exec cmake-format -i {} \;
+          git diff --exit-code
     - name : Configure
       run: cmake -DBUILD_TESTING=ON -S . -B build
     - name : Build
