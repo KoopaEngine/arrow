@@ -38,8 +38,8 @@ jobs:
             clang-format
     - name: Merge fork with upstream locally
       run: |
-          git config pull.rebase true
-          git clone --branch ${{ env.TARGET_BRANCH_NAME }} https://github.com/KoopaEngine/arrow.git
+          # git config pull.rebase true
+          # git clone --branch ${{ env.TARGET_BRANCH_NAME }} https://github.com/KoopaEngine/arrow.git
           git pull -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "${{ env.SOURCE_BRANCH_NAME }}"
           git status
     - name: Format code
