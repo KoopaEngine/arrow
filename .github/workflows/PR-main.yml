@@ -20,7 +20,6 @@ jobs:
   Ubuntu-20-04-x86_64:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
     - name: PR info
       run: |
           echo "PR Num: ${{ env.PR_NUM }}"
@@ -63,16 +62,6 @@ jobs:
   Check_Code_Format:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: PR info
-      run: |
-          echo "PR Num: ${{ env.PR_NUM }}"
-          echo "PR Author: ${{ env.PR_AUTHOR }}"
-          echo "PR Author Full Name: ${{ env.PR_AUTHOR_FULL_NAME }}"
-          echo "PR Author email: ${{ env.PR_AUTHOR_EMAIL }}"
-          echo "PR Author fork: ${{ env.PR_AUTHOR_FORK }}"
-          echo "Source branch name: ${{ env.SOURCE_BRANCH_NAME }}"
-          echo "Target branch name: ${{ env.TARGET_BRANCH_NAME }}"
     - name: Install dependency packages
       run: |
           sudo apt install -y --no-install-recommends \
@@ -91,22 +80,12 @@ jobs:
   Check_Cmake_Format:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: PR info
-      run: |
-          echo "PR Num: ${{ env.PR_NUM }}"
-          echo "PR Author: ${{ env.PR_AUTHOR }}"
-          echo "PR Author Full Name: ${{ env.PR_AUTHOR_FULL_NAME }}"
-          echo "PR Author email: ${{ env.PR_AUTHOR_EMAIL }}"
-          echo "PR Author fork: ${{ env.PR_AUTHOR_FORK }}"
-          echo "Source branch name: ${{ env.SOURCE_BRANCH_NAME }}"
-          echo "Target branch name: ${{ env.TARGET_BRANCH_NAME }}"
     - name: Install dependency packages
       run: |
           sudo apt install -y --no-install-recommends \
-            git \
-            cmake \
-            clang-format
+            git
+          python -m pip install --upgrade pip
+          pip install cmake_format
     - name: Merge fork with upstream locally
       run: |
           git config pull.rebase true
