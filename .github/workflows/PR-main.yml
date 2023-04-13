@@ -21,8 +21,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-      with:
-          github_token: ${{ secrets.ACTION_BOT_KEY }}
     - name: PR info
       run: |
           echo "PR Num: ${{ env.PR_NUM }}"
@@ -38,6 +36,8 @@ jobs:
             git \
             cmake \
             clang-format
+          python -m pip install --upgrade pip
+          pip install cmake_format
     - name: Merge fork with upstream locally
       run: |
           git config pull.rebase true
