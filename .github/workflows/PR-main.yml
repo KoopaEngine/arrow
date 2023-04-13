@@ -41,14 +41,16 @@ jobs:
           git pull -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "${{ env.SOURCE_BRANCH_NAME }}"
     - name: Format code
       run: | 
-          find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
+          find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -not -path '*/extern/*' -exec clang-format -style=file -i {} \;
           git diff
-    - name: Push formated code
+    - name: Commit formated code
       run: |
           git config user.name "Github Action Bot" 
           git config user.email "actions@users.noreply.github.com"
           git add .
           git commit -m "Format code"
+    - name: Push formatted code
+      run: |
           git push  "https://github.com/${{ env.PR_AUTHOR_FORK }}" "main:${{ env.SOURCE_BRANCH_NAME }}"
 #     - name : Format
 #       run: find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
