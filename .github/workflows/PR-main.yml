@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ACTION_BOT_KEY }}
     - name: PR info
       run: |
           echo "PR Num: ${{ env.PR_NUM }}"
