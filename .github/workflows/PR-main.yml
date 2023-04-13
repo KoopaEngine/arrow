@@ -58,7 +58,7 @@ jobs:
           git commit -m "Format code"
     - name: Push formatted code
       run: |
-          git push  "https://github.com/${{ env.PR_AUTHOR_FORK }}/sudoManager.git" "$(git rev-parse --short HEAD):${{ env.SOURCE_BRANCH_NAME }}"
+          git push  "https://github.com/${{ env.PR_AUTHOR_FORK }}.git" "$(git rev-parse --short HEAD):${{ env.SOURCE_BRANCH_NAME }}"
           # git push origin pull/${{env.PR_NUM}}/merge
           # git push upstream pull/{{env.PR_NUM}}/head:pr{{env.PR_NUM}}
 #     - name : Format
