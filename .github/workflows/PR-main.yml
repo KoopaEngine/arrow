@@ -60,7 +60,7 @@ jobs:
       run: |
           cd build
           ctest
-  Check code format:
+  Check_Code_Format:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
@@ -88,7 +88,7 @@ jobs:
       run: | 
           find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -not -path '*/extern/*' -exec clang-format -style=file -i {} \;
           git diff --exit-code
-  Check cmake format:
+  Check_Cmake_Format:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
