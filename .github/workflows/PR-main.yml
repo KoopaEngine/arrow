@@ -42,15 +42,14 @@ jobs:
     - name: Format code
       run: | 
           find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
-          # git config user.name {{env.PR_AUTHOR_FULL_NAME}} 
+          git diff
     - name: Push formated code
       run: |
           git config user.name "Github Action Bot" 
-          # git config user.email {{env.PR_AUTHOR_EMAIL}} 
           git config user.email "actions@users.noreply.github.com"
           git add .
           git commit -m "Format code"
-          git push -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "main:${{ env.SOURCE_BRANCH_NAME }}"
+          git push  "https://github.com/${{ env.PR_AUTHOR_FORK }}" "main:${{ env.SOURCE_BRANCH_NAME }}"
 #     - name : Format
 #       run: find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
     - name : Configure
