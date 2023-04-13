@@ -60,3 +60,59 @@ jobs:
       run: |
           cd build
           ctest
+  Check code format:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: PR info
+      run: |
+          echo "PR Num: ${{ env.PR_NUM }}"
+          echo "PR Author: ${{ env.PR_AUTHOR }}"
+          echo "PR Author Full Name: ${{ env.PR_AUTHOR_FULL_NAME }}"
+          echo "PR Author email: ${{ env.PR_AUTHOR_EMAIL }}"
+          echo "PR Author fork: ${{ env.PR_AUTHOR_FORK }}"
+          echo "Source branch name: ${{ env.SOURCE_BRANCH_NAME }}"
+          echo "Target branch name: ${{ env.TARGET_BRANCH_NAME }}"
+    - name: Install dependency packages
+      run: |
+          sudo apt install -y --no-install-recommends \
+            git \
+            cmake \
+            clang-format
+    - name: Merge fork with upstream locally
+      run: |
+          git config pull.rebase true
+          git pull -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "${{ env.SOURCE_BRANCH_NAME }}"
+          git status
+    - name: Run check
+      run: | 
+          find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -not -path '*/extern/*' -exec clang-format -style=file -i {} \;
+          git diff --exit-code
+  Check cmake format:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: PR info
+      run: |
+          echo "PR Num: ${{ env.PR_NUM }}"
+          echo "PR Author: ${{ env.PR_AUTHOR }}"
+          echo "PR Author Full Name: ${{ env.PR_AUTHOR_FULL_NAME }}"
+          echo "PR Author email: ${{ env.PR_AUTHOR_EMAIL }}"
+          echo "PR Author fork: ${{ env.PR_AUTHOR_FORK }}"
+          echo "Source branch name: ${{ env.SOURCE_BRANCH_NAME }}"
+          echo "Target branch name: ${{ env.TARGET_BRANCH_NAME }}"
+    - name: Install dependency packages
+      run: |
+          sudo apt install -y --no-install-recommends \
+            git \
+            cmake \
+            clang-format
+    - name: Merge fork with upstream locally
+      run: |
+          git config pull.rebase true
+          git pull -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "${{ env.SOURCE_BRANCH_NAME }}"
+          git status
+    - name: Run check
+      run: |
+          find . \( -name '*.cmake' -o -name 'CMakeLists.txt' \) -not -path '*/extern/*/*' -exec cmake-format -i {} \;
+          git diff --exit-code
