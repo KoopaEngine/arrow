@@ -20,6 +20,7 @@ jobs:
   Ubuntu-20-04-x86_64:
     runs-on: ubuntu-20.04
     steps:
+    - uses: actions/checkout@v2
     - name: PR info
       run: |
           echo "PR Num: ${{ env.PR_NUM }}"
@@ -33,24 +34,13 @@ jobs:
       run: |
           sudo apt install -y --no-install-recommends \
             git \
-            cmake \
-            clang-format
-          python -m pip install --upgrade pip
-          pip install cmake_format
+            cmake
     - name: Merge fork with upstream locally
       run: |
           git config pull.rebase true
           # git clone --branch ${{ env.TARGET_BRANCH_NAME }} https://github.com/KoopaEngine/arrow.git
           git pull -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "${{ env.SOURCE_BRANCH_NAME }}"
           git status
-    - name: Check clang-format
-      run: | 
-          find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -not -path '*/extern/*' -exec clang-format -style=file -i {} \;
-          git diff --quiet || exit 1 || echo -e "\e[31mPlease  format code with\e[0m \e[32mclang-format.\e[0m"
-    - name: Check cmake-format
-      run: |
-          find . \( -name '*.cmake' -o -name 'CMakeLists.txt' \) -not -path  '*/extern/*/*' -exec cmake-format -i {} \;
-          git diff --quiet || exit 1 || echo -e "\e[31mPlease format code with\e[0m \e[32mcmake-format.\e[0m"
     - name : Configure
       run: cmake -DBUILD_TESTING=ON -S . -B build
     - name : Build
@@ -62,6 +52,7 @@ jobs:
   Check_Code_Format:
     runs-on: ubuntu-20.04
     steps:
+    - uses: actions/checkout@v2
     - name: Install dependency packages
       run: |
           sudo apt install -y --no-install-recommends \
@@ -80,6 +71,7 @@ jobs:
   Check_Cmake_Format:
     runs-on: ubuntu-20.04
     steps:
+    - uses: actions/checkout@v2
     - name: Install dependency packages
       run: |
           sudo apt install -y --no-install-recommends \
