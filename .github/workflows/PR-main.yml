@@ -9,6 +9,8 @@ on:
 
 env:
   PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+  PR_AUTHOR_FULL_NAME: ${{ github.event.pull_request.user.name }}
+  PR_AUTHOR_EMAIL: ${{ github.event.pull_request.user.email }}
   PR_AUTHOR_FORK: ${{ github.event.pull_request.head.repo.full_name }}
   SOURCE_BRANCH_NAME: ${{ github.head_ref }}
   TARGET_BRANCH_NAME: ${{ github.base_ref }}
@@ -21,6 +23,8 @@ jobs:
     - name: PR info
       run: |
           echo "PR Author: ${{ env.PR_AUTHOR }}"
+          echo "PR Author Full Name: ${{ env.PR_AUTHOR_FULL_NAME }}"
+          echo "PR Author email: ${{ env.PR_AUTHOR_EMAIL }}"
           echo "PR Author fork: ${{ env.PR_AUTHOR_FORK }}"
           echo "Source branch name: ${{ env.SOURCE_BRANCH_NAME }}"
           echo "Target branch name: ${{ env.TARGET_BRANCH_NAME }}"
@@ -32,10 +36,18 @@ jobs:
             clang-format
     - name: Merge fork with upstream locally
       run: |
-          git config pull.rebase true
           git clone --branch ${{ env.TARGET_BRANCH_NAME }} https://github.com/KoopaEngine/arrow.git
           git pull -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "${{ env.SOURCE_BRANCH_NAME }}"
-
+    - name: Format code
+      run: | 
+          find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
+          # git config user.name {{env.PR_AUTHOR_FULL_NAME}} 
+          git config user.name "Github Action Bot" 
+          # git config user.email {{env.PR_AUTHOR_EMAIL}} 
+          git config user.email "actions@users.noreply.github.com"
+          git add .
+          git commit -m "Format code"
+          git push -v "https://github.com/${{ env.PR_AUTHOR_FORK }}" "${{ env.SOURCE_BRANCH_NAME }}"
 #     - name : Format
 #       run: find . -regex '.*\.\(cpp\|hpp\|cxx\|cp\|cc\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
     - name : Configure
